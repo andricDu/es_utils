@@ -1,17 +1,14 @@
 import json
 from elasticsearch import Elasticsearch
 import progressbar
+from config import *
 
 __author__ = 'andricDu'
-
-# CONFIGURATION
-file_path = 'test.json'
-hosts = ['localhost:9200']
 
 def read_json_dump():
     print('Finding File...')
     global hits
-    with open(file_path) as data_file:
+    with open(conf_file_path) as data_file:
         print('Starting JSON Loading...')
         data = json.load(data_file)
         hits = data['hits']['hits']
@@ -20,7 +17,7 @@ def read_json_dump():
 def bootstrap_local_es():
     global es_local
     print('Bootstrapping test-index index')
-    es_local = Elasticsearch(hosts=hosts)
+    es_local = Elasticsearch(hosts=conf_hosts)
     es_local.indices.delete(index='test-index', ignore=[400, 404])
     es_local.indices.create(index='test-index')
 
