@@ -1,6 +1,4 @@
-import json
 from elasticsearch import Elasticsearch
-import progressbar
 from config import *
 
 __author__ = 'andricDu'
@@ -8,18 +6,18 @@ __author__ = 'andricDu'
 
 def bootstrap_local_es():
     global es_local
-    print('Bootstrapping test-index index')
+    print('Bootstrapping ES')
     es_local = Elasticsearch(hosts=conf_hosts)
 
 
 def delete(query):
 
-    response = es_local.search(index='test-index', body=query)
+    response = es_local.search(index=conf_index, body=query)
     hits = response['hits']['hits']
     print(len(hits))
 
     for hit in hits:
-        es_local.delete(index='test-index', id=hit['_id'], doc_type=hit['_type'])
+        es_local.delete(index=conf_index, id=hit['_id'], doc_type=hit['_type'])
 
 
 def run():
