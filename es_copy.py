@@ -1,6 +1,5 @@
 import json
 from elasticsearch import Elasticsearch
-import progressbar
 from config import *
 
 __author__ = 'andricDu'
@@ -25,13 +24,10 @@ def bootstrap_local_es():
 def index_hits():
     global hits
     print('\nLoading Documents')
-    progress = progressbar.ProgressBar(max_value=len(hits))
     count = 0
     for hit in hits:
         es_local.index(index=conf_index, doc_type=hit['_type'], body=hit['_source'], id=hit['_id'])
         count += 1
-        progress.update(count)
-
 
 def run():
     bootstrap_local_es()
